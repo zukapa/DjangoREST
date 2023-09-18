@@ -51,10 +51,7 @@ class App extends React.Component {
   render () {
     return (
         <div>
-            <Menu />
-            <Users users={this.state.users} />
-            <Projects projects={this.state.projects} />
-            <ToDoList todolist={this.state.todolist} />
+            <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects} />
             <Footer />
         </div>
     )

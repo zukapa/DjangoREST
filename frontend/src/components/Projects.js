@@ -2,27 +2,33 @@ import React from 'react'
 
 const Project = ({project}) => {
     return (
-        <tr>
-            <td>
-                {project.name}
-            </td>
-            <td>
-                {project.url}
-            </td>
-        </tr>
+        <tbody>
+            <tr>
+                <td>
+                    {project.name}
+                </td>
+                <td>
+                    {project.url}
+                </td>
+            </tr>
+        </tbody>
     )
 }
 
 const Projects = ({projects}) => {
     return (
         <table>
-            <th>
-                Project name
-            </th>
-            <th>
-                Url
-            </th>
-            {projects.map((project) => <Project project={project} />)}
+            <thead>
+                <tr>
+                    <th>
+                        Project name
+                    </th>
+                    <th>
+                        Url
+                    </th>
+                </tr>
+            </thead>
+            {projects.map((project) => <Project project={project} key={project.id}/>)}
         </table>
     )
 }

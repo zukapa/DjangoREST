@@ -2,27 +2,33 @@ import React from 'react'
 
 const User = ({user}) => {
     return (
-        <tr>
-            <td>
-                {user.username}
-            </td>
-            <td>
-                {user.email}
-            </td>
-        </tr>
+        <tbody>
+            <tr>
+                <td>
+                    {user.username}
+                </td>
+                <td>
+                    {user.email}
+                </td>
+            </tr>
+        </tbody>
     )
 }
 
 const Users = ({users}) => {
     return (
-        <table>
-            <th>
-                Username
-            </th>
-            <th>
-                Email
-            </th>
-            {users.map((user) => <User user={user} />)}
+        <table key={users.id}>
+            <thead>
+                <tr>
+                    <th>
+                        Username
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                </tr>
+            </thead>
+            {users.map((user) => <User user={user} key={user.id} />)}
         </table>
     )
 }
