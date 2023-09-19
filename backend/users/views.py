@@ -5,5 +5,5 @@ from .serializers import UserSerializer
 
 
 class UserViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.get_queryset().order_by('id')
     serializer_class = UserSerializer
