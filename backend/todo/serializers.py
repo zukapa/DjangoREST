@@ -6,6 +6,7 @@ class ProjectSerializer(HyperlinkedModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'name', 'link_repository', 'users']
+        read_only_fields = ['users']
 
 
 class ToDoSerializer(HyperlinkedModelSerializer):

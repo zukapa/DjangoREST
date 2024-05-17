@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 const Project = ({project}) => {
     return (
@@ -29,6 +30,8 @@ const Projects = ({projects}) => {
                 </tr>
             </thead>
             {projects.map((project) => <Project project={project} key={project.id}/>)}
+
+            <Link to='/projects/create'>Create</Link>
         </table>
     )
 }

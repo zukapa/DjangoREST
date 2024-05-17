@@ -17,6 +17,7 @@ class App extends React.Component {
     this.logOut = this.logOut.bind(this)
     this.isAuth = this.isAuth.bind(this)
     this.getToken = this.getToken.bind(this)
+    this.createProject = this.createProject.bind(this)
   }
 
   getToken(username, password) {
@@ -88,6 +89,21 @@ class App extends React.Component {
         }).catch(error => console.log(error))
   }
 
+  createProject(name, link_repository, users) {
+    const headers = this.getHeaders()
+    const data = {'name': name, 'link_repository': link_repository, 'users': [users]}
+    console.log(data)
+    axios.post('http://localhost:8000/api/projects/', data, {headers})
+        .then(response => {
+            let newProject = response.data
+            console.log(newProject)
+            const project = this.state.projects.filter((item) => item.id === newProject.project)[0]
+            console.log(project)
+            newProject.project = project
+            this.setState({projects: [...this.state.projects, newProject]})
+        }).catch(error => console.log(error))
+  }
+
   componentDidMount() {
     this.getTokenFromStorage()
   }
@@ -96,7 +112,7 @@ class App extends React.Component {
     return (
         <div>
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
-                getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} />
+                getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}/>
             <Footer />
         </div>
     )

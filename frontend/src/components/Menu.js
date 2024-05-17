@@ -4,8 +4,9 @@ import Projects from './Projects.js'
 import ToDoList from './Todolist.js'
 import AuthForm from './Auth.js'
 import Users from './Users.js'
+import ProjectsForm from './CreateProjects.js'
 
-const Menu = ({todolist, projects, users, getToken, logOut, isAuth}) => {
+const Menu = ({todolist, projects, users, getToken, logOut, isAuth, createProject}) => {
     return (
         <BrowserRouter>
             <nav>
@@ -30,6 +31,7 @@ const Menu = ({todolist, projects, users, getToken, logOut, isAuth}) => {
                 <Route exact path='/users' element = {<Users users={users} />} />
                 <Route exact path='/login' element = {<AuthForm getToken={(username, password) => {getToken(username,
                     password)}} />} />
+                <Route exact path='/projects/create' element = {<ProjectsForm users={users} createProject={(name, link_repository, users) => {createProject(name, link_repository, users)}} />} />
             </Routes>
         </BrowserRouter>
     )
