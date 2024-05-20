@@ -18,6 +18,7 @@ class App extends React.Component {
     this.isAuth = this.isAuth.bind(this)
     this.getToken = this.getToken.bind(this)
     this.createProject = this.createProject.bind(this)
+    this.deleteProject = this.deleteProject.bind(this)
   }
 
   getToken(username, password) {
@@ -91,16 +92,23 @@ class App extends React.Component {
 
   createProject(name, link_repository, users) {
     const headers = this.getHeaders()
-    const data = {'name': name, 'link_repository': link_repository, 'users': [users]}
-    console.log(data)
+    const data = {'name': name, 'link_repository': link_repository, 'users': users}
     axios.post('http://localhost:8000/api/projects/', data, {headers})
         .then(response => {
             let newProject = response.data
-            console.log(newProject)
             const project = this.state.projects.filter((item) => item.id === newProject.project)[0]
-            console.log(project)
             newProject.project = project
             this.setState({projects: [...this.state.projects, newProject]})
+        }).catch(error => console.log(error))
+  }
+
+  deleteProject(id) {
+    const headers = this.getHeaders()
+    axios.delete(`http://localhost:8000/api/projects/${id}`, {headers})
+        .then(response => {
+            this.setState({
+                projects: this.state.projects.filter((item) => item.id !== id)
+            })
         }).catch(error => console.log(error))
   }
 
@@ -112,7 +120,8 @@ class App extends React.Component {
     return (
         <div>
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
-                getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}/>
+                getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}
+                deleteProject={this.deleteProject}/>
             <Footer />
         </div>
     )
