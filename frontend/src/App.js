@@ -19,6 +19,8 @@ class App extends React.Component {
     this.getToken = this.getToken.bind(this)
     this.createProject = this.createProject.bind(this)
     this.deleteProject = this.deleteProject.bind(this)
+    this.createToDo = this.createToDo.bind(this)
+    this.deleteToDo = this.deleteToDo.bind(this)
   }
 
   getToken(username, password) {
@@ -112,6 +114,30 @@ class App extends React.Component {
         }).catch(error => console.log(error))
   }
 
+  createToDo(project, text, user, active) {
+    const headers = this.getHeaders()
+    const data = {'project': project, 'text': text, 'user': user, 'active': active}
+    axios.post('http://localhost:8000/api/todo/', data, {headers})
+        .then(response => {
+            let newToDo = response.data
+            const todo = this.state.todolist.filter((item) => item.id === newToDo.todo)[0]
+            newToDo.todo = todo
+            this.setState({todolist: [...this.state.todolist, newToDo]})
+        }).catch(error => console.log(error))
+  }
+
+  deleteToDo(id) {
+    const headers = this.getHeaders()
+    axios.delete(`http://localhost:8000/api/todo/${id}`, {headers})
+        .then(response => {
+            this.setState({
+                todolist: this.state.todolist.filter((item) => item.id !== id)
+
+            })
+            console.log(response)
+        }).catch(error => console.log(error))
+  }
+
   componentDidMount() {
     this.getTokenFromStorage()
   }
@@ -121,7 +147,7 @@ class App extends React.Component {
         <div>
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
                 getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}
-                deleteProject={this.deleteProject}/>
+                deleteProject={this.deleteProject} createToDo={this.createToDo} deleteToDo={this.deleteToDo}/>
             <Footer />
         </div>
     )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-class ProjectsForm extends React.Component {
+class ProjectForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -47,4 +47,4 @@ class ProjectsForm extends React.Component {
     }
 }
 
-export default ProjectsForm
+export default ProjectForm
