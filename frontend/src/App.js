@@ -84,9 +84,10 @@ class App extends React.Component {
     axios.get('http://localhost:8000/api/todo', {headers})
         .then(response => {
           const todolist = response.data.results
+          const todoActive = todolist.filter((todo) => todo.active === true)
           this.setState(
               {
-                'todolist': todolist
+                'todolist': todoActive
               }
           )
         }).catch(error => console.log(error))
@@ -132,7 +133,6 @@ class App extends React.Component {
         .then(response => {
             this.setState({
                 todolist: this.state.todolist.filter((item) => item.id !== id)
-
             })
             console.log(response)
         }).catch(error => console.log(error))
