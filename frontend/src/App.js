@@ -12,7 +12,8 @@ class App extends React.Component {
       'users': [],
       'projects': [],
       'todolist': [],
-      'token': ''
+      'token': '',
+      'searched': []
     }
     this.logOut = this.logOut.bind(this)
     this.isAuth = this.isAuth.bind(this)
@@ -21,6 +22,7 @@ class App extends React.Component {
     this.deleteProject = this.deleteProject.bind(this)
     this.createToDo = this.createToDo.bind(this)
     this.deleteToDo = this.deleteToDo.bind(this)
+    this.searchProjects = this.searchProjects.bind(this)
   }
 
   getToken(username, password) {
@@ -138,6 +140,11 @@ class App extends React.Component {
         }).catch(error => console.log(error))
   }
 
+  searchProjects(searchText) {
+      const searchedProjects = this.state.projects.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+      this.setState({'searched': searchedProjects})
+  }
+
   componentDidMount() {
     this.getTokenFromStorage()
   }
@@ -147,7 +154,8 @@ class App extends React.Component {
         <div>
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
                 getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}
-                deleteProject={this.deleteProject} createToDo={this.createToDo} deleteToDo={this.deleteToDo}/>
+                deleteProject={this.deleteProject} createToDo={this.createToDo} deleteToDo={this.deleteToDo}
+                searched={this.state.searched} searchProjects={this.searchProjects}/>
             <Footer />
         </div>
     )
