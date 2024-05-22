@@ -23,6 +23,8 @@ class App extends React.Component {
     this.createToDo = this.createToDo.bind(this)
     this.deleteToDo = this.deleteToDo.bind(this)
     this.searchProjects = this.searchProjects.bind(this)
+    this.clearStateSearched = this.clearStateSearched.bind(this)
+    this.isSearched = this.isSearched.bind(this)
   }
 
   getToken(username, password) {
@@ -145,8 +147,17 @@ class App extends React.Component {
       this.setState({'searched': searchedProjects})
   }
 
+  clearStateSearched() {
+      this.setState({'searched': []})
+  }
+
+  isSearched() {
+    return this.state.searched.length !== 0
+  }
+
   componentDidMount() {
     this.getTokenFromStorage()
+    this.clearStateSearched()
   }
 
   render() {
@@ -155,7 +166,8 @@ class App extends React.Component {
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
                 getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}
                 deleteProject={this.deleteProject} createToDo={this.createToDo} deleteToDo={this.deleteToDo}
-                searched={this.state.searched} searchProjects={this.searchProjects}/>
+                searched={this.state.searched} searchProjects={this.searchProjects} clearStateSearched={this.clearStateSearched}
+                isSearched={this.isSearched} />
             <Footer />
         </div>
     )
