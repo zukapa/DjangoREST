@@ -34,14 +34,15 @@ class ToDoForm extends React.Component {
             <div>
                 <form onSubmit={(event) => this.submitForm(event)}>
                     <select name="project" onChange={(event) => this.setStateChange(event)}>
-                        {this.props.projects.map((project) => <option value={project.url} key={project.id}> {project.name} </option>)}
+                        {this.props.projects.map((project) => <option value={project.url} key={project.id}>
+                        {project.name} </option>)}
                     </select>
                     <input type="text" name="text" placeholder="Text" onChange={(event) => this.setStateChange(event)}/>
                     <select name="user" onChange={(event) => this.setStateChange(event)}>
-                        {this.props.users.map((user) => <option value={user.url} key={user.id}> {user.username} </option>)}
+                        {this.props.users.map((user) => <option value={user.url} key={user.id}>
+                        {user.username} </option>)}
                     </select>
                     <input type="checkbox" name="active" onChange={(event) => this.setStateChange(event)}/>
-
                     <input type="submit" value="Submit"/>
                 </form>
             </div>

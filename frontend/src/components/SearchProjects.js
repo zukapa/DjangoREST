@@ -4,24 +4,29 @@ class SearchProjects extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            searchProjects: props.searchProjects,
+            projects: props.projects,
+            searched: [],
+            text: props.textSearch
         }
     }
 
     componentDidMount() {
-        this.props.clearStateSearched()
+        this.searchProjects()
+        this.props.clearStateTextSearch()
     }
 
-    newState(){
-        this.setState({
-            searchProjects: this.props.searchProjects
-        })
+    componentDidUpdate()  {
+        if (this.props.textSearch !== this.state.text && this.props.textSearch.length !== 0) {
+            this.searchProjects()
+            this.props.clearStateTextSearch()
+            this.setState({'text': ''})
+        }
     }
 
-    static getDerivedStateFromProps(props, state){
-        this.setState({
-            searchProjects: props.searchProjects
-        })
+    searchProjects() {
+        const searchedProjects = this.state.projects.filter((item) =>
+            item.name.toLowerCase().includes(this.props.textSearch.toLowerCase()))
+        this.setState({'searched': searchedProjects})
     }
 
     render() {
@@ -37,9 +42,9 @@ class SearchProjects extends React.Component {
                         </th>
                     </tr>
                 </thead>
-                {this.state.searchProjects.map((project) => {
+                {this.state.searched.map((project) => {
                     return (
-                        <tbody>
+                        <tbody key={project.id}>
                             <tr>
                                 <td>
                                     {project.name}
@@ -51,8 +56,6 @@ class SearchProjects extends React.Component {
                         </tbody>
                     )
                 })}
-
-                {console.log('должно быть ДО')}
             </table>
         )
     }

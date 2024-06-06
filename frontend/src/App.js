@@ -13,7 +13,8 @@ class App extends React.Component {
       'projects': [],
       'todolist': [],
       'token': '',
-      'searched': []
+      'searched': [],
+      'textSearch': ''
     }
     this.logOut = this.logOut.bind(this)
     this.isAuth = this.isAuth.bind(this)
@@ -23,8 +24,9 @@ class App extends React.Component {
     this.createToDo = this.createToDo.bind(this)
     this.deleteToDo = this.deleteToDo.bind(this)
     this.searchProjects = this.searchProjects.bind(this)
-    this.clearStateSearched = this.clearStateSearched.bind(this)
+    this.clearStateTextSearch = this.clearStateTextSearch.bind(this)
     this.isSearched = this.isSearched.bind(this)
+    this.getTextSearch = this.getTextSearch.bind(this)
   }
 
   getToken(username, password) {
@@ -143,21 +145,36 @@ class App extends React.Component {
   }
 
   searchProjects(searchText) {
-      const searchedProjects = this.state.projects.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()))
+      const redirectSearchProjects = () => {
+        window.location.href = '/projects/search'
+      }
+
+      const searchedProjects = this.state.projects.filter((item) =>
+        item.name.toLowerCase().includes(searchText.toLowerCase()))
       this.setState({'searched': searchedProjects})
+      redirectSearchProjects()
   }
 
-  clearStateSearched() {
-      this.setState({'searched': []})
+  clearStateTextSearch() {
+      this.setState({'textSearch': ''})
   }
 
   isSearched() {
     return this.state.searched.length !== 0
   }
 
+  getTextSearch(event) {
+    event.preventDefault()
+    const form = event.target
+    const formData = new FormData(form)
+    const formJson = Object.fromEntries(formData.entries())
+    const text = formJson['search']
+    this.setState({'textSearch': text})
+  }
+
   componentDidMount() {
     this.getTokenFromStorage()
-    this.clearStateSearched()
+    this.clearStateTextSearch()
   }
 
   render() {
@@ -166,8 +183,9 @@ class App extends React.Component {
             <Menu todolist={this.state.todolist} users={this.state.users} projects={this.state.projects}
                 getToken={this.getToken} logOut={this.logOut} isAuth={this.isAuth} createProject={this.createProject}
                 deleteProject={this.deleteProject} createToDo={this.createToDo} deleteToDo={this.deleteToDo}
-                searched={this.state.searched} searchProjects={this.searchProjects} clearStateSearched={this.clearStateSearched}
-                isSearched={this.isSearched} />
+                searched={this.state.searched} searchProjects={this.searchProjects}
+                clearStateTextSearch={this.clearStateTextSearch} isSearched={this.isSearched}
+                textSearch={this.state.textSearch} getTextSearch={this.getTextSearch}/>
             <Footer />
         </div>
     )
