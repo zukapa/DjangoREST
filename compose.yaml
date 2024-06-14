@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres
+    privileged: true
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: zsp
+      POSTGRES_PASSWORD: 1q2w3e4r
+      POSTGRES_DB: todo
+  backend:
+    build:
+      context: .
+    restart: always
+    expose:
+      - 8080
+    command: bash -c "
+      python manage.py migrate
+      && python manage.py createusers
+      && gunicorn backend.wsgi -b 0.0.0.0:8080
+      "
+    environment:
+      DJANGO_SETTINGS_MODULE: 'backend.settings.production'
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - 80:80
+    depends_on:
+      - nginx
